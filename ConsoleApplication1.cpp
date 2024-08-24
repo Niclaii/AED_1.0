@@ -2,6 +2,8 @@
 
 using namespace std;
 
+//TEMPLATES//
+
 class Arr
 {
     public:
@@ -37,22 +39,49 @@ public:
     nodo <T>* head;
 };
 
+
+//Functor//
+
+template <class T>
+
 class Funto
 {
-    int _x;
+    T _x;
 public:
 
-    Funto(int x) : _x(x) {}
+    Funto(T x) : _x(x) {}
 
-    int operator()(int a)
+    int operator()(T a)
     {
         return _x + a;
     }
 
 };
 
+template <class T>
+class Funto2
+{
+    T _x;
+public:
+
+    Funto2(T x) : _x(x) {}
+
+    int operator()(T a)
+    {
+        return _x * a;
+    }
+
+};
 
 
+template<class T>
+void Tabla(T fu)
+{
+    for (int x = 0; x < 10; x++)
+    {
+        cout << fu(x) << endl;
+    }
+}
 
 int main()
 {
@@ -60,7 +89,7 @@ int main()
     {
         cout << x << endl;
     }
-
+    cout << endl;
     Arr obj;
     Arr2<int> obj1;
     Arr2<int,20> obj2;
@@ -68,5 +97,20 @@ int main()
 
     LE<nodo<int>> Lista;
 
+    Funto<int> A(10);
+    cout << A(5) << endl; //IMPRIME 15
+    cout << A(3) << endl; //IMPRIME 13
+
+    cout << endl;
+
+    Tabla(Funto<int>(100));// IMPRIME LA LISTA DE 100 HASTA 109
+    
+    cout << endl;
+
+    Tabla(A);//IMPRIME DE 10 A 19 
+
+    cout << endl;
+    
+    Tabla(Funto2<int>(100)); //IMPRIME LA LISTA DE 100 HASTA 900 PERO CADA CENTENA
 
 }
