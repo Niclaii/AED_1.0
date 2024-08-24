@@ -81,7 +81,39 @@ void Tabla(T fu)
     {
         cout << fu(x) << endl;
     }
+};
+
+
+void swap(int* a, int* b)
+{
+    int* tmp = nullptr;
+    *tmp = *a;
+    *a = *b;
+    *b = *tmp;
 }
+
+void Bubble(int * ini,int *fin)
+{
+    for (int* p = ini; p < fin; p++)
+    {
+        for (int* q = p + 1; q < fin; q++)
+        {
+            if (*p > *q)
+            {
+                swap(*p, *q);
+            }
+        }
+        fin--;
+    }
+};
+
+
+
+
+
+
+
+
 
 int main()
 {
@@ -112,5 +144,17 @@ int main()
     cout << endl;
     
     Tabla(Funto2<int>(100)); //IMPRIME LA LISTA DE 100 HASTA 900 PERO CADA CENTENA
+
+    cout << endl;
+
+    int B[10] = { 1,5,2,7,11,6,3,0,9,15 };
+
+    Bubble(B, B + 10);
+    for (int i=0; i < 10; i++)
+    {
+        cout << B[i];
+    }
+
+
 
 }
