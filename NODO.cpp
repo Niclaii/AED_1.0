@@ -8,8 +8,7 @@ struct nodo
     T valor;
     nodo<T>* next;
 
-    // Constructor del nodo
-    nodo(T v, nodo<T>* n = nullptr) // Cambiar 'null' a 'nullptr'
+    nodo(T v, nodo<T>* n = nullptr) 
     {
         valor = v;
         next = n;
@@ -19,35 +18,33 @@ struct nodo
 template <class T>
 struct LE
 {
-    nodo<T>* head = nullptr; // Usar 'nullptr' en lugar de 'NULL' para punteros
+    nodo<T>* head = nullptr; 
 
-    // Método para agregar un nuevo nodo al principio de la lista
     void add(T v)
     {
-        nodo<T>* nuevonodo = new nodo<T>(v); // Añadir tipo de nodo y corregir paréntesis
+        nodo<T>* nuevonodo = new nodo<T>(v);
         nuevonodo->next = head;
         head = nuevonodo;
     }
 
-    // Método para eliminar un nodo con el valor dado
     void del(T v)
     {
         nodo<T>* pos = head;
-        nodo<T>* prev = nullptr; // Puntero para mantener el nodo anterior
+        nodo<T>* prev = nullptr; 
 
         while (pos != nullptr)
         {
             if (pos->valor == v)
             {
-                if (prev == nullptr) // Si es el primer nodo
+                if (prev == nullptr) 
                 {
                     head = pos->next;
                 }
-                else // Si no es el primer nodo
+                else 
                 {
                     prev->next = pos->next;
                 }
-                delete pos; // Eliminar nodo
+                delete pos; 
                 return;
             }
             prev = pos;
@@ -55,7 +52,6 @@ struct LE
         }
     }
 
-    // Método para buscar un nodo con el valor dado
     bool find(T v, nodo<T>*& pos)
     {
         pos = head;
@@ -63,14 +59,13 @@ struct LE
         {
             if (pos->valor == v)
             {
-                return true; // Se encontró el valor
+                return true; 
             }
             pos = pos->next;
         }
-        return false; // No se encontró el valor
+        return false; 
     }
 
-    // Método para imprimir todos los nodos de la lista
     void print()
     {
         nodo<T>* actual = head;
@@ -79,7 +74,7 @@ struct LE
             cout << actual->valor << " -> ";
             actual = actual->next;
         }
-        cout << "nullptr" << endl; // Indica el final de la lista
+        cout << "nullptr" << endl; 
     }
 };
 
@@ -90,7 +85,7 @@ int main()
     lista.add(10);
     lista.add(15);
 
-    cout << "Lista después de agregar nodos: ";
+    cout << "Lista despuÃ©s de agregar nodos: ";
     lista.print();
 
     nodo<int>* encontrado = nullptr;
@@ -104,7 +99,7 @@ int main()
     }
 
     lista.del(10);
-    cout << "Lista después de eliminar el nodo con valor 10: ";
+    cout << "Lista despuÃ©s de eliminar el nodo con valor 10: ";
     lista.print();
 
     LE<char>lista2;
