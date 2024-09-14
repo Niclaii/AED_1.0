@@ -2,82 +2,120 @@
 
 using namespace std;
 
-
-template<class T>
+template <class T>
 struct nodo
 {
     T valor;
     nodo<T>* next;
-    nodo(T v, nodo<T>* n = null)
+
+    // Constructor del nodo
+    nodo(T v, nodo<T>* n = nullptr) // Cambiar 'null' a 'nullptr'
     {
         valor = v;
         next = n;
     }
 };
 
-template <class T , class U>
+template <class T>
 struct LE
 {
-    nodo<T>* head = NULL;
+    nodo<T>* head = nullptr; // Usar 'nullptr' en lugar de 'NULL' para punteros
+
+    // Método para agregar un nuevo nodo al principio de la lista
     void add(T v)
     {
-        head->valor = v;
-        head->next;                                         ///MODIFICAR
+        nodo<T>* nuevonodo = new nodo<T>(v); // Añadir tipo de nodo y corregir paréntesis
+        nuevonodo->next = head;
+        head = nuevonodo;
     }
+
+    // Método para eliminar un nodo con el valor dado
     void del(T v)
     {
         nodo<T>* pos = head;
-        while (pos != nullptr;)
+        nodo<T>* prev = nullptr; // Puntero para mantener el nodo anterior
+
+        while (pos != nullptr)
         {
             if (pos->valor == v)
             {
-                delete pos;
-                break;
+                if (prev == nullptr) // Si es el primer nodo
+                {
+                    head = pos->next;
+                }
+                else // Si no es el primer nodo
+                {
+                    prev->next = pos->next;
+                }
+                delete pos; // Eliminar nodo
+                return;
             }
-            else
-            {
-                pos->next;
-            }
+            prev = pos;
+            pos = pos->next;
         }
     }
+
+    // Método para buscar un nodo con el valor dado
     bool find(T v, nodo<T>*& pos)
     {
         pos = head;
-        while (;pos<)
+        while (pos != nullptr)
         {
             if (pos->valor == v)
             {
-                break;
+                return true; // Se encontró el valor
             }
-            else
-            {
-                pos->next;
-            }
+            pos = pos->next;
         }
-        return 
+        return false; // No se encontró el valor
     }
+
+    // Método para imprimir todos los nodos de la lista
     void print()
     {
-        for()
+        nodo<T>* actual = head;
+        while (actual != nullptr)
+        {
+            cout << actual->valor << " -> ";
+            actual = actual->next;
+        }
+        cout << "nullptr" << endl; // Indica el final de la lista
     }
 };
 
-
-
-
 int main()
 {
-    
-    nodo<int>* b = new nodo<int>(5, 0);
+    LE<int> lista;
+    lista.add(5);
+    lista.add(10);
+    lista.add(15);
 
+    cout << "Lista después de agregar nodos: ";
+    lista.print();
 
+    nodo<int>* encontrado = nullptr;
+    if (lista.find(10, encontrado))
+    {
+        cout << "Valor 10 encontrado en la lista." << endl;
+    }
+    else
+    {
+        cout << "Valor 10 no encontrado en la lista." << endl;
+    }
 
+    lista.del(10);
+    cout << "Lista después de eliminar el nodo con valor 10: ";
+    lista.print();
 
+    LE<char>lista2;
+    lista2.add('a');
+    lista2.add('b');
 
+    lista2.print();
 
+    lista2.del('a');
 
+    lista2.print();
 
-
-
+    return 0;
 }
-
