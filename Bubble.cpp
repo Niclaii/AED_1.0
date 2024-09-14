@@ -2,8 +2,6 @@
 
 using namespace std;
 
-
-
 template<class T>
 class Asc
 {
@@ -54,7 +52,6 @@ int main()
 	int A[6] = { 6,5,4,3,2,1 };
 	char B[6] = { 'b','a','c','d','e','f' };
 
-
 	Bubble<int, Asc<int>> b;
 
 	b(A, A + 5);
@@ -75,7 +72,6 @@ int main()
 		cout << *p << " ";
 	}
 	cout << "\n";
-
 };
 
 
