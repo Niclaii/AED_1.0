@@ -24,6 +24,7 @@ public:
         return a < b;
     }
 };
+
 template<class T>
 class Desc
 {
@@ -34,10 +35,13 @@ public:
     }
 };
 
-template <class T>
+template <class T,class O>
 struct LE
 {
     nodo<T>* head = nullptr;
+    O ordenar;
+
+
 
     ~LE()
     {
@@ -49,8 +53,63 @@ struct LE
         }
     }
 
-    template<class O>
-    void findPrevAndCurrent(T v, O ordenar, nodo<T>*& prev, nodo<T>*& current)
+    void add(T v)
+    {
+        nodo<T>* prev = nullptr;
+        nodo<T>* current = nullptr;
+        find(v, prev, current);
+
+        nodo<T>* nuevonodo = new nodo<T>(v);
+
+        if (prev == nullptr)
+        {
+            nuevonodo->next = head;
+            head = nuevonodo;
+        }
+        else
+        {
+            prev->next = nuevonodo;
+            nuevonodo->next = current;
+        }
+    }
+
+    void add1(T v)
+    {
+        nodo<T>* prev = nullptr;
+        
+        if (!find(v, prev, current))
+        {
+            if (prev == nullptr)
+                head = new nodo<T>(v,head);
+            else
+               prev->next = new nodo<T>(v, prev->next);
+
+        }
+    }
+
+
+
+    void del(T v)
+    {
+        nodo<T>* prev = nullptr;
+        nodo<T>* current = nullptr;
+        find(v, prev, current);
+
+        if (current != nullptr && current->valor == v)
+        {
+            if (prev == nullptr)
+            {
+                head = current->next;
+            }
+            else
+            {
+                prev->next = current->next;
+            }
+            delete current; 
+        }
+    }
+
+    void find(T v, nodo<T>*& prev, nodo<T>*& current) 
     {
         prev = nullptr;
         current = head;
@@ -62,66 +121,16 @@ struct LE
         }
     }
 
-    template<class O>
-    void add(T v, O ordenar)
+    bool find(T v, nodo<T>*& prev)
     {
-        nodo<T>* prev = nullptr;
-        nodo<T>* current = nullptr;
-        findPrevAndCurrent(v, ordenar, prev, current);
-
-        nodo<T>* nuevonodo = new nodo<T>(v);
-
-        if (prev == nullptr)
-        {
-            // Insertar al principio de la lista
-            nuevonodo->next = head;
-            head = nuevonodo;
-        }
-        else
-        {
-            // Insertar en el medio o al final
-            prev->next = nuevonodo;
-            nuevonodo->next = current;
-        }
-    }
-
-    template<class O>
-    void del(T v, O ordenar)
-    {
-        nodo<T>* prev = nullptr;
-        nodo<T>* current = nullptr;
-        findPrevAndCurrent(v, ordenar, prev, current);
-
-        // Si se encuentra el nodo a eliminar
-        if (current != nullptr && current->valor == v)
-        {
-            if (prev == nullptr)
-            {
-                // El nodo a eliminar es la cabeza de la lista
-                head = current->next;
-            }
-            else
-            {
-                // El nodo a eliminar está en el medio o al final
-                prev->next = current->next;
-            }
-            delete current; // Libera la memoria del nodo eliminado
-        }
-    }
-
-    bool find(T v, nodo<T>*& pos) const
-    {
-        pos = head;
-        while (pos != nullptr)
-        {
-            if (pos->valor == v)
-            {
-                return true;
-            }
-            pos = pos->next;
-        }
+        prev = null;
+        nodo<T>* p=head;
+        for (; p && ordenar(p->valor, v); prev = p, p = p->next);
+        if (p && p->valor == v)
+            return true;
         return false;
     }
+
 
     void print() const
     {
@@ -137,42 +146,35 @@ struct LE
 
 int main()
 {
-    LE<int> lista;
+  
+    LE<int, Asc<int>> lista;
     Asc<int> asc;
     Desc<int> desc;
     Asc<char> asc2;
     Desc<char> desc2;
 
 
-    lista.add(5, asc);
-    lista.add(10, asc);
-    lista.add(15, asc);
+    lista.add(5);
+    lista.add(10);
+    lista.add(10);
+    lista.add(15);
 
     cout << "Lista después de agregar nodos: ";
     lista.print();
 
-    nodo<int>* encontrado = nullptr;
-    if (lista.find(10, encontrado))
-    {
-        cout << "Valor 10 encontrado en la lista." << endl;
-    }
-    else
-    {
-        cout << "Valor 10 no encontrado en la lista." << endl;
-    }
-
-    lista.del(10,asc);
+ 
+    lista.del(10);
     cout << "Lista después de eliminar el nodo con valor 10: ";
     lista.print();
 
-    LE<char>lista2;
-    lista2.add('a', asc2);
-    lista2.add('c', asc2);
-    lista2.add('b', asc2);
+    LE<char,Asc<char>>lista2;
+    lista2.add('a');
+    lista2.add('c');
+    lista2.add('b');
 
     lista2.print();
 
-    lista2.del('a',asc);
+    lista2.del('a');
 
     lista2.print();
 
