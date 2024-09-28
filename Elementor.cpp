@@ -1,37 +1,37 @@
 #include <iostream>
 
-// Clase Nodo
+
 template<class T>
 class Nodo {
 public:
-    T* arr;  // Arreglo dinámico de arr
+    T* arr;  
     Nodo<T>* next;
     int top;
-    int tam;  // Tamaño del bloque
+    int tam;  
 
-    // Constructor del nodo
+  
     Nodo(int size) : next(nullptr), top(0), tam(size) {
         arr = new T[tam];
     }
 
-    // Destructor para liberar memoria
+  
     ~Nodo() {
         delete[] arr;
     }
 };
 
-// Clase ListaEnlazada
+
 template<class T>
 class ListaEnlazada {
 private:
     Nodo<T>* head;
-    int tam;  // Tamaño del bloque para todos los nodos
+    int tam; 
 
 public:
-    // Constructor con tamaño de bloque
+
     ListaEnlazada(int size) : head(nullptr), tam(size) {}
 
-    // Destructor para limpiar todos los nodos
+
     ~ListaEnlazada() {
         Nodo<T>* actual = head;
         while (actual != nullptr) {
@@ -41,12 +41,12 @@ public:
         }
     }
 
-    // Método find para encontrar el nodo y la posición relativa dentro del nodo
+
     void find(int posicion, Nodo<T>*& nodo_encontrado, int& relative_pos) {
         Nodo<T>* actual = head;
         int index = 0;
 
-        // Buscar el nodo y la posición correcta
+
         while (actual != nullptr && index + actual->top <= posicion) {
             index += actual->top;
             actual = actual->next;
@@ -62,7 +62,7 @@ public:
         relative_pos = posicion - index;
     }
 
-    // Insertar al final
+
     void insert_back(T valor) {
         if (!head) {
             head = new Nodo<T>(tam);
@@ -82,7 +82,7 @@ public:
         actual->arr[actual->top++] = valor;
     }
 
-    // Insertar al frente
+
     void insert_front(T valor) {
         if (!head || head->top == tam) {
             Nodo<T>* nuevo = new Nodo<T>(tam);
@@ -99,7 +99,7 @@ public:
         }
     }
 
-    // Insertar en el medio en una posición dada
+
     void insert_middle(T valor, int posicion) {
         Nodo<T>* actual;
         int relative_pos;
@@ -111,7 +111,7 @@ public:
         }
 
         if (actual->top < tam) {
-            // Si hay espacio, inserta el valor directamente
+
             for (int i = actual->top; i > relative_pos; --i) {
                 actual->arr[i] = actual->arr[i - 1];
             }
@@ -119,7 +119,7 @@ public:
             actual->top++;
         }
         else {
-            // Si el bloque está lleno, divide y reubica
+
             Nodo<T>* nuevo = new Nodo<T>(tam);
             nuevo->next = actual->next;
             actual->next = nuevo;
@@ -131,11 +131,11 @@ public:
             nuevo->top = mitad;
             actual->top = mitad;
 
-            insert_middle(valor, posicion);  // Reintenta la inserción
+            insert_middle(valor, posicion); 
         }
     }
 
-    // Eliminar un valor en una posición dada
+
     void eliminar(int posicion) {
         Nodo<T>* actual;
         int relative_pos;
@@ -146,21 +146,21 @@ public:
             return;
         }
 
-        // Desplazar los arr hacia la izquierda dentro del nodo
+ 
         for (int i = relative_pos; i < actual->top - 1; ++i) {
             actual->arr[i] = actual->arr[i + 1];
         }
         actual->top--;
 
-        // Si el nodo está vacío después de eliminar el valor
+    
         if (actual->top == 0) {
-            // Si es el nodo cabeza
+        
             if (actual == head) {
                 head = head->next;
                 delete actual;
             }
             else {
-                // Encontrar el nodo anterior para eliminar el nodo vacío
+      
                 Nodo<T>* prev = head;
                 while (prev->next != actual) {
                     prev = prev->next;
@@ -171,18 +171,17 @@ public:
         }
     }
 
-    // Ordenar los elementos de la lista de manera ascendente sin usar vector
+
     void ordenar_lista() {
-        if (!head || !head->next) return;  // No es necesario ordenar si hay un solo nodo
+        if (!head || !head->next) return;  
 
         bool swapped;
         do {
             swapped = false;
             Nodo<T>* actual = head;
 
-            // Vamos a recorrer los nodos
+ 
             while (actual != nullptr) {
-                // Dentro de cada nodo ordenamos el arreglo
                 for (int i = 0; i < actual->top - 1; ++i) {
                     if (actual->arr[i] > actual->arr[i + 1]) {
                         std::swap(actual->arr[i], actual->arr[i + 1]);
@@ -190,7 +189,7 @@ public:
                     }
                 }
 
-                // Ahora ordenamos los valores entre nodos
+    
                 if (actual->next != nullptr && actual->top > 0 && actual->next->top > 0) {
                     if (actual->arr[actual->top - 1] > actual->next->arr[0]) {
                         std::swap(actual->arr[actual->top - 1], actual->next->arr[0]);
@@ -202,7 +201,7 @@ public:
         } while (swapped);
     }
 
-    // Mostrar la lista enlazada
+
     void Imprimir() {
         Nodo<T>* actual = head;
         while (actual != nullptr) {
@@ -216,27 +215,26 @@ public:
 };
 
 int main() {
-    ListaEnlazada<int> lista(5);  // Crear la lista con tamaño de bloque de 5
+    ListaEnlazada<int> lista(5);  
 
-    // Insertar elementos en la lista
-    lista.insert_back(11);  // Insertar 11 al principio
+
+    lista.insert_back(11);  
     lista.insert_back(4);
     lista.insert_back(2);
     lista.insert_back(8);
-    lista.insert_back(10);  // Debería crear un nuevo nodo
-    lista.insert_front(1);  // Insertar al frente
-    lista.insert_middle(5, 3);  // Insertar en el medio (después de 4)
+    lista.insert_back(10);  
+    lista.insert_front(1);  
+    lista.insert_middle(5, 3);  
 
-    // Ordenar la lista
     lista.ordenar_lista();
 
-    // Mostrar la lista
+
     lista.Imprimir();
 
-    // Eliminar un valor
-    lista.eliminar(1);  // Eliminar en la posición 1 (segundo valor)
 
-    // Mostrar la lista después de eliminar
+    lista.eliminar(1);  
+
+
     lista.Imprimir();
 
     return 0;
