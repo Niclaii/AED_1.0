@@ -116,7 +116,7 @@ public:
 
         // Si es una hoja, la agregamos
         if (!nodo->left && !nodo->right) {
-            hojas.add(nodo->valor);
+            borde.add(nodo->valor); // Las hojas también son parte del borde
             return;
         }
 
@@ -125,11 +125,11 @@ public:
         almacenarHojas(nodo->right);
     }
 
-    // Dibuja el nodo con un contorno específico
-    void dibujarNodo(sf::RenderWindow& window, float x, float y, sf::Color contornoColor, int valor) {
+    // Dibuja el nodo con un color específico
+    void dibujarNodo(sf::RenderWindow& window, float x, float y, sf::Color color, int valor) {
         sf::CircleShape circle(20);
-        circle.setFillColor(sf::Color::White); // Fondo blanco
-        circle.setOutlineColor(contornoColor); // Contorno del color especificado
+        circle.setFillColor(color); // Color sólido para el nodo
+        circle.setOutlineColor(sf::Color::White); // Contorno blanco para contraste
         circle.setOutlineThickness(2);
         circle.setPosition(x, y);
         window.draw(circle);
@@ -148,14 +148,11 @@ public:
     void dibujarNodos(TreeNode* nodo, sf::RenderWindow& window, float x, float y, float offsetX, float offsetY) {
         if (!nodo) return;
 
-        if (hojas.contains(nodo->valor)) {
-            dibujarNodo(window, x, y, sf::Color::Green, nodo->valor); // Contorno verde para hojas
-        }
-        else if (borde.contains(nodo->valor)) {
-            dibujarNodo(window, x, y, sf::Color::Blue, nodo->valor); // Contorno azul para nodos del borde
+        if (borde.contains(nodo->valor)) {
+            dibujarNodo(window, x, y, sf::Color::Blue, nodo->valor); // Color azul para los nodos del borde
         }
         else {
-            dibujarNodo(window, x, y, sf::Color::White, nodo->valor); // Contorno blanco para nodos normales
+            dibujarNodo(window, x, y, sf::Color::White, nodo->valor); // Blanco para nodos normales
         }
 
         if (nodo->left) {
@@ -178,10 +175,9 @@ public:
 
     void prepararDibujos() {
         borde.clear(); // Limpiar los nodos del borde
-        hojas.clear(); // Limpiar las hojas
         tamaniosPorNivel.clear();
         almacenarBorde(raiz, 0, true, true); // Calcular los nodos del borde por nivel
-        almacenarHojas(raiz); // Calcular todas las hojas
+        almacenarHojas(raiz); // Asegurarse de incluir todas las hojas
     }
 
 private:
@@ -190,7 +186,6 @@ private:
     bool fontCargado;
 
     Vector borde; // Nodos del borde
-    Vector hojas; // Nodos hoja
     std::vector<TreeNode*> tamaniosPorNivel; // Primer nodo en cada nivel
 };
 
