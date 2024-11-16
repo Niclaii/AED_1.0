@@ -9,7 +9,6 @@ struct TreeNode {
     TreeNode(int val) : valor(val), left(nullptr), right(nullptr) {}
 };
 
-// Función para insertar nodos en el árbol binario de búsqueda
 TreeNode* insert(TreeNode* nodo, int valor) {
     if (nodo == nullptr) {
         return new TreeNode(valor);
@@ -23,7 +22,6 @@ TreeNode* insert(TreeNode* nodo, int valor) {
     return nodo;
 }
 
-// Clase Vector creada desde cero
 class Vector {
 public:
     Vector() : capacidad(10), tamanio(0) {
@@ -71,7 +69,6 @@ private:
     }
 };
 
-// Clase para manejar la visualización del árbol binario
 class BinaryTreeVisualizer {
 public:
     BinaryTreeVisualizer(TreeNode* raiz) : raiz(raiz) {
@@ -84,24 +81,17 @@ public:
         }
     }
 
-    // Almacenar los nodos del borde (izquierdo y derecho) por nivel
     void almacenarBorde(TreeNode* nodo, int nivel, bool esIzquierda, bool esDerecha) {
         if (!nodo) return;
-
-        // Verificar si es un nodo del borde
         if (nivel >= tamaniosPorNivel.size()) {
-            // Primer nodo en este nivel, es parte del borde
             tamaniosPorNivel.push_back(nodo);
             borde.add(nodo->valor);
         }
         else {
-            // Solo el primer nodo a la izquierda o el último a la derecha se agrega
             if (esIzquierda || esDerecha) {
                 borde.add(nodo->valor);
             }
         }
-
-        // Continuar hacia los hijos
         if (nodo->left) {
             almacenarBorde(nodo->left, nivel + 1, esIzquierda, false);
         }
@@ -110,26 +100,20 @@ public:
         }
     }
 
-    // Almacenar todas las hojas del árbol
     void almacenarHojas(TreeNode* nodo) {
         if (!nodo) return;
-
-        // Si es una hoja, la agregamos
         if (!nodo->left && !nodo->right) {
-            borde.add(nodo->valor); // Las hojas también son parte del borde
+            borde.add(nodo->valor);
             return;
         }
-
-        // Continuar hacia los hijos
         almacenarHojas(nodo->left);
         almacenarHojas(nodo->right);
     }
 
-    // Dibuja el nodo con un color específico
     void dibujarNodo(sf::RenderWindow& window, float x, float y, sf::Color color, int valor) {
         sf::CircleShape circle(20);
-        circle.setFillColor(color); // Color sólido para el nodo
-        circle.setOutlineColor(sf::Color::White); // Contorno blanco para contraste
+        circle.setFillColor(color);
+        circle.setOutlineColor(sf::Color::White);
         circle.setOutlineThickness(2);
         circle.setPosition(x, y);
         window.draw(circle);
@@ -144,17 +128,14 @@ public:
         }
     }
 
-    // Dibuja los nodos del árbol
     void dibujarNodos(TreeNode* nodo, sf::RenderWindow& window, float x, float y, float offsetX, float offsetY) {
         if (!nodo) return;
-
         if (borde.contains(nodo->valor)) {
-            dibujarNodo(window, x, y, sf::Color::Blue, nodo->valor); // Color azul para los nodos del borde
+            dibujarNodo(window, x, y, sf::Color::Blue, nodo->valor);
         }
         else {
-            dibujarNodo(window, x, y, sf::Color::White, nodo->valor); // Blanco para nodos normales
+            dibujarNodo(window, x, y, sf::Color::White, nodo->valor);
         }
-
         if (nodo->left) {
             sf::Vertex line[] = { sf::Vertex(sf::Vector2f(x + 20, y + 20), sf::Color::White),
                                  sf::Vertex(sf::Vector2f(x - offsetX + 20, y + offsetY + 20), sf::Color::White) };
@@ -174,35 +155,30 @@ public:
     }
 
     void prepararDibujos() {
-        borde.clear(); // Limpiar los nodos del borde
+        borde.clear();
         tamaniosPorNivel.clear();
-        almacenarBorde(raiz, 0, true, true); // Calcular los nodos del borde por nivel
-        almacenarHojas(raiz); // Asegurarse de incluir todas las hojas
+        almacenarBorde(raiz, 0, true, true);
+        almacenarHojas(raiz);
     }
 
 private:
     TreeNode* raiz;
     sf::Font font;
     bool fontCargado;
-
-    Vector borde; // Nodos del borde
-    std::vector<TreeNode*> tamaniosPorNivel; // Primer nodo en cada nivel
+    Vector borde;
+    std::vector<TreeNode*> tamaniosPorNivel;
 };
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Visualización del Árbol Binario");
-
     TreeNode* raiz = nullptr;
     int valores[] = { 10, 5, 15, 3, 7, 13, 18, 1, 4, 6, 8, 11, 19 };
     int numnodos = sizeof(valores) / sizeof(valores[0]);
-
     for (int i = 0; i < numnodos; ++i) {
         raiz = insert(raiz, valores[i]);
     }
-
     BinaryTreeVisualizer visualizer(raiz);
     visualizer.prepararDibujos();
-
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -210,11 +186,9 @@ int main() {
                 window.close();
             }
         }
-
         window.clear(sf::Color::Black);
         visualizer.display(window);
         window.display();
     }
-
     return 0;
 }
