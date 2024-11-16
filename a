@@ -110,11 +110,26 @@ public:
         }
     }
 
-    // Dibuja el nodo con un color específico
-    void dibujarNodo(sf::RenderWindow& window, float x, float y, sf::Color color, int valor) {
+    // Almacenar todas las hojas del árbol
+    void almacenarHojas(TreeNode* nodo) {
+        if (!nodo) return;
+
+        // Si es una hoja, la agregamos
+        if (!nodo->left && !nodo->right) {
+            hojas.add(nodo->valor);
+            return;
+        }
+
+        // Continuar hacia los hijos
+        almacenarHojas(nodo->left);
+        almacenarHojas(nodo->right);
+    }
+
+    // Dibuja el nodo con un contorno específico
+    void dibujarNodo(sf::RenderWindow& window, float x, float y, sf::Color contornoColor, int valor) {
         sf::CircleShape circle(20);
-        circle.setFillColor(color);
-        circle.setOutlineColor(sf::Color::White);
+        circle.setFillColor(sf::Color::White); // Fondo blanco
+        circle.setOutlineColor(contornoColor); // Contorno del color especificado
         circle.setOutlineThickness(2);
         circle.setPosition(x, y);
         window.draw(circle);
@@ -133,14 +148,14 @@ public:
     void dibujarNodos(TreeNode* nodo, sf::RenderWindow& window, float x, float y, float offsetX, float offsetY) {
         if (!nodo) return;
 
-        if (nodo->valor == objetivo) {
-            dibujarNodo(window, x, y, sf::Color::Red, nodo->valor); // Rojo para el nodo objetivo
+        if (hojas.contains(nodo->valor)) {
+            dibujarNodo(window, x, y, sf::Color::Green, nodo->valor); // Contorno verde para hojas
         }
         else if (borde.contains(nodo->valor)) {
-            dibujarNodo(window, x, y, sf::Color::Blue, nodo->valor); // Azul para nodos del borde
+            dibujarNodo(window, x, y, sf::Color::Blue, nodo->valor); // Contorno azul para nodos del borde
         }
         else {
-            dibujarNodo(window, x, y, sf::Color::White, nodo->valor); // Blanco para nodos normales
+            dibujarNodo(window, x, y, sf::Color::White, nodo->valor); // Contorno blanco para nodos normales
         }
 
         if (nodo->left) {
@@ -161,20 +176,21 @@ public:
         dibujarNodos(raiz, window, 400, 50, 150, 100);
     }
 
-    void prepararDibujos(int objetivo) {
-        this->objetivo = objetivo; // Guardar el nodo objetivo
+    void prepararDibujos() {
         borde.clear(); // Limpiar los nodos del borde
+        hojas.clear(); // Limpiar las hojas
         tamaniosPorNivel.clear();
         almacenarBorde(raiz, 0, true, true); // Calcular los nodos del borde por nivel
+        almacenarHojas(raiz); // Calcular todas las hojas
     }
 
 private:
     TreeNode* raiz;
     sf::Font font;
     bool fontCargado;
-    int objetivo; // Nodo objetivo para resaltarlo
 
     Vector borde; // Nodos del borde
+    Vector hojas; // Nodos hoja
     std::vector<TreeNode*> tamaniosPorNivel; // Primer nodo en cada nivel
 };
 
@@ -190,9 +206,7 @@ int main() {
     }
 
     BinaryTreeVisualizer visualizer(raiz);
-
-    int objetivo = 1; // Nodo objetivo para encontrar los bordes
-    visualizer.prepararDibujos(objetivo);
+    visualizer.prepararDibujos();
 
     while (window.isOpen()) {
         sf::Event event;
