@@ -9,7 +9,7 @@ struct TreeNode {
     TreeNode(int val) : valor(val), left(nullptr), right(nullptr) {}
 };
 
-// Función para insertar nodos en el árbol binario de búsqueda
+// FunciÃ³n para insertar nodos en el Ã¡rbol binario de bÃºsqueda
 TreeNode* insert(TreeNode* nodo, int valor) {
     if (nodo == nullptr) {
         return new TreeNode(valor);
@@ -23,12 +23,12 @@ TreeNode* insert(TreeNode* nodo, int valor) {
     return nodo;
 }
 
-// Clase para manejar la visualización del árbol binario
+// Clase para manejar la visualizaciÃ³n del Ã¡rbol binario
 class BinaryTreeVisualizer {
 public:
     BinaryTreeVisualizer(TreeNode* raiz) : raiz(raiz) {
         if (!font.loadFromFile("arial.ttf")) {
-            std::cerr << "No se pudo cargar la fuente 'arial.ttf'. Se usarán círculos sin texto.\n";
+            std::cerr << "No se pudo cargar la fuente 'arial.ttf'. Se usarÃ¡n cÃ­rculos sin texto.\n";
             fontcargado = false;
         }
         else {
@@ -46,12 +46,12 @@ public:
         circle.setOutlineThickness(2);
         circle.setPosition(x, y);
 
-        // Dibujar el texto dentro del círculo si la fuente se cargó
+        // Dibujar el texto dentro del cÃ­rculo si la fuente se cargÃ³
         if (fontcargado) {
             sf::Text text(std::to_string(nodo->valor), font, 16);
             text.setFillColor(sf::Color::Black);
 
-            // Centramos el texto en el círculo
+            // Centramos el texto en el cÃ­rculo
             sf::FloatRect textRect = text.getLocalBounds();
             text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
             text.setPosition(x + circle.getRadius(), y + circle.getRadius());
@@ -60,11 +60,11 @@ public:
             window.draw(text);
         }
         else {
-            // Dibujar solo el círculo si no hay fuente
+            // Dibujar solo el cÃ­rculo si no hay fuente
             window.draw(circle);
         }
 
-        // Dibujar la línea hacia el nodo izquierdo
+        // Dibujar la lÃ­nea hacia el nodo izquierdo
         if (nodo->left) {
             sf::Vertex line[] = {
                 sf::Vertex(sf::Vector2f(x + 20, y + 20), sf::Color::White),
@@ -74,7 +74,7 @@ public:
             draw(window, nodo->left, x - offsetX, y + offsetY, offsetX / 2, offsetY);
         }
 
-        // Dibujar la línea hacia el nodo derecho
+        // Dibujar la lÃ­nea hacia el nodo derecho
         if (nodo->right) {
             sf::Vertex line[] = {
                 sf::Vertex(sf::Vector2f(x + 20, y + 20), sf::Color::White),
@@ -100,11 +100,11 @@ int main() {
 
     TreeNode* raiz = nullptr;
 
-    // Valores predefinidos para el árbol
+    // Valores predefinidos para el Ã¡rbol
     int valores[] = { 10, 5, 15, 3, 7, 13, 18, 1, 4, 6, 8 };
     int numnodos = sizeof(valores) / sizeof(valores[0]);
 
-    // Insertar cada valor en el árbol
+    // Insertar cada valor en el Ã¡rbol
     for (int i = 0; i < numnodos; ++i) {
         raiz = insert(raiz, valores[i]);
     }
@@ -119,7 +119,7 @@ int main() {
             }
         }
 
-        // Limpiar la ventana y dibujar el árbol
+        // Limpiar la ventana y dibujar el Ã¡rbol
         window.clear(sf::Color::Black);
         visualizer.display(window);
         window.display();
