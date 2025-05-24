@@ -9,7 +9,7 @@ struct TreeNode {
     TreeNode(int val) : valor(val), left(nullptr), right(nullptr) {}
 };
 
-// FunciÛn para insertar nodos en el ·rbol binario de b˙squeda
+// Funci√≥n para insertar nodos en el √°rbol binario de b√∫squeda
 TreeNode* insert(TreeNode* nodo, int valor) {
     if (nodo == nullptr) {
         return new TreeNode(valor);
@@ -71,12 +71,12 @@ private:
     }
 };
 
-// Clase para manejar la visualizaciÛn del ·rbol binario
+// Clase para manejar la visualizaci√≥n del √°rbol binario
 class BinaryTreeVisualizer {
 public:
     BinaryTreeVisualizer(TreeNode* raiz) : raiz(raiz) {
         if (!font.loadFromFile("arial.ttf")) {
-            std::cerr << "No se pudo cargar la fuente 'arial.ttf'. Se usar·n cÌrculos sin texto.\n";
+            std::cerr << "No se pudo cargar la fuente 'arial.ttf'. Se usar√°n c√≠rculos sin texto.\n";
             fontCargado = false;
         }
         else {
@@ -84,13 +84,13 @@ public:
         }
     }
 
-    // Almacenar los tÌos y primos del nodo objetivo (ajustado para considerar 13 y 18 como tÌos)
+    // Almacenar los t√≠os y primos del nodo objetivo (ajustado para considerar 13 y 18 como t√≠os)
     void almacenarTiosYPrimos(TreeNode* nodo, int objetivo, TreeNode* padre, TreeNode* abuelo, TreeNode* bisabuelo) {
         if (!nodo) return;
 
-        // Si encontramos el nodo objetivo, buscamos sus tÌos y primos
+        // Si encontramos el nodo objetivo, buscamos sus t√≠os y primos
         if (nodo->valor == objetivo) {
-            // TÌos (hermanos del padre)
+            // T√≠os (hermanos del padre)
             if (abuelo != nullptr) {
                 if (abuelo->left && abuelo->left != padre) {
                     tios.add(abuelo->left->valor);
@@ -101,16 +101,16 @@ public:
                     almacenarHijosComoPrimos(abuelo->right);
                 }
             }
-            // TÌos adicionales (hijos de los hermanos del abuelo)
+            // T√≠os adicionales (hijos de los hermanos del abuelo)
             if (bisabuelo != nullptr) {
                 if (bisabuelo->left && bisabuelo->left != abuelo) {
                     TreeNode* hermanoAbuelo = bisabuelo->left;
                     if (hermanoAbuelo->left) {
-                        tios.add(hermanoAbuelo->left->valor); // 13 como tÌo
+                        tios.add(hermanoAbuelo->left->valor); // 13 como t√≠o
                         almacenarHijosComoPrimos(hermanoAbuelo->left);
                     }
                     if (hermanoAbuelo->right) {
-                        tios.add(hermanoAbuelo->right->valor); // 18 como tÌo
+                        tios.add(hermanoAbuelo->right->valor); // 18 como t√≠o
                         almacenarHijosComoPrimos(hermanoAbuelo->right);
                     }
                 }
@@ -129,7 +129,7 @@ public:
             return;
         }
 
-        // Continuar recorriendo el ·rbol
+        // Continuar recorriendo el √°rbol
         almacenarTiosYPrimos(nodo->left, objetivo, nodo, padre, abuelo);
         almacenarTiosYPrimos(nodo->right, objetivo, nodo, padre, abuelo);
     }
@@ -141,7 +141,7 @@ public:
         if (nodo->right) primos.add(nodo->right->valor);
     }
 
-    // Dibuja el nodo con un color especÌfico
+    // Dibuja el nodo con un color espec√≠fico
     void dibujarNodo(sf::RenderWindow& window, float x, float y, sf::Color color, int valor) {
         sf::CircleShape circle(20);
         circle.setFillColor(color);
@@ -160,7 +160,7 @@ public:
         }
     }
 
-    // Dibuja los nodos utilizando los vectores de tÌos y primos
+    // Dibuja los nodos utilizando los vectores de t√≠os y primos
     void dibujarNodos(TreeNode* nodo, sf::RenderWindow& window, float x, float y, float offsetX, float offsetY) {
         if (!nodo) return;
 
@@ -168,7 +168,7 @@ public:
             dibujarNodo(window, x, y, sf::Color::Red, nodo->valor); // Rojo para el nodo objetivo
         }
         else if (tios.contains(nodo->valor)) {
-            dibujarNodo(window, x, y, sf::Color::Green, nodo->valor); // Verde para tÌos
+            dibujarNodo(window, x, y, sf::Color::Green, nodo->valor); // Verde para t√≠os
         }
         else if (primos.contains(nodo->valor)) {
             dibujarNodo(window, x, y, sf::Color::Yellow, nodo->valor); // Amarillo para primos
@@ -197,7 +197,7 @@ public:
 
     void prepararDibujos(int objetivo) {
         this->objetivo = objetivo; // Guardar el nodo objetivo
-        tios.clear(); // Limpiar el vector de tÌos
+        tios.clear(); // Limpiar el vector de t√≠os
         primos.clear(); // Limpiar el vector de primos
         almacenarTiosYPrimos(raiz, objetivo, nullptr, nullptr, nullptr);
     }
@@ -213,7 +213,7 @@ private:
 };
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "VisualizaciÛn del ¡rbol Binario");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Visualizaci√≥n del √Årbol Binario");
 
     TreeNode* raiz = nullptr;
     int valores[] = { 10, 5, 15, 3, 7, 13, 18, 1, 4, 6, 8 ,11,19};
@@ -225,7 +225,7 @@ int main() {
 
     BinaryTreeVisualizer visualizer(raiz);
 
-    int objetivo = 1; // Nodo objetivo para encontrar los tÌos y primos
+    int objetivo = 1; // Nodo objetivo para encontrar los t√≠os y primos
     visualizer.prepararDibujos(objetivo);
 
     while (window.isOpen()) {
