@@ -9,7 +9,7 @@ struct TreeNode {
     TreeNode(int val) : valor(val), left(nullptr), right(nullptr) {}
 };
 
-// Función para insertar nodos en el árbol binario de búsqueda
+
 TreeNode* insert(TreeNode* nodo, int valor) {
     if (nodo == nullptr) {
         return new TreeNode(valor);
@@ -23,7 +23,6 @@ TreeNode* insert(TreeNode* nodo, int valor) {
     return nodo;
 }
 
-// Clase para manejar la visualización del árbol binario
 class BinaryTreeVisualizer {
 public:
     BinaryTreeVisualizer(TreeNode* raiz) : raiz(raiz) {
@@ -39,14 +38,12 @@ public:
     void draw(sf::RenderWindow& window, TreeNode* nodo, float x, float y, float offsetX, float offsetY) {
         if (!nodo) return;
 
-        // Dibujar el nodo
         sf::CircleShape circle(20);
         circle.setFillColor(sf::Color::Green);
         circle.setOutlineColor(sf::Color::White);
         circle.setOutlineThickness(2);
         circle.setPosition(x, y);
 
-        // Dibujar el texto dentro del círculo si la fuente se cargó
         if (fontcargado) {
             sf::Text text(std::to_string(nodo->valor), font, 16);
             text.setFillColor(sf::Color::Black);
@@ -64,7 +61,6 @@ public:
             window.draw(circle);
         }
 
-        // Dibujar la línea hacia el nodo izquierdo
         if (nodo->left) {
             sf::Vertex line[] = {
                 sf::Vertex(sf::Vector2f(x + 20, y + 20), sf::Color::White),
@@ -74,7 +70,6 @@ public:
             draw(window, nodo->left, x - offsetX, y + offsetY, offsetX / 2, offsetY);
         }
 
-        // Dibujar la línea hacia el nodo derecho
         if (nodo->right) {
             sf::Vertex line[] = {
                 sf::Vertex(sf::Vector2f(x + 20, y + 20), sf::Color::White),
@@ -100,7 +95,6 @@ int main() {
 
     TreeNode* raiz = nullptr;
 
-    // Valores predefinidos para el árbol
     int valores[] = { 10, 5, 15, 3, 7, 13, 18, 1, 4, 6, 8 };
     int numnodos = sizeof(valores) / sizeof(valores[0]);
 
@@ -119,7 +113,6 @@ int main() {
             }
         }
 
-        // Limpiar la ventana y dibujar el árbol
         window.clear(sf::Color::Black);
         visualizer.display(window);
         window.display();
